@@ -85,7 +85,14 @@ def isdone(selected):
     end = False
     mark=''
     # WIN
-    if (selected[1] == selected[2] == selected[3] and selected[1] != ' ') or         (selected[4] == selected[5] == selected[6] and selected[4] != ' ') or        (selected[7] == selected[8] == selected[9] and selected[7] != ' ') or        (selected[1] == selected[4] == selected[7] and selected[1] != ' ') or          (selected[2] == selected[5] == selected[8] and selected[2] != ' ') or        (selected[3] == selected[6] == selected[9] and selected[3] != ' ') or        (selected[1] == selected[5] == selected[9] and selected[1] != ' ') or        (selected[3] == selected[5] == selected[7] and selected[3] != ' '):
+        if ((selected[1] == selected[2] == selected[3] and selected[1] != ' ') or
+            (selected[4] == selected[5] == selected[6] and selected[4] != ' ') or
+            (selected[7] == selected[8] == selected[9] and selected[7] != ' ') or
+            (selected[1] == selected[4] == selected[7] and selected[1] != ' ') or
+            (selected[2] == selected[5] == selected[8] and selected[2] != ' ') or
+            (selected[3] == selected[6] == selected[9] and selected[3] != ' ') or
+            (selected[1] == selected[5] == selected[9] and selected[1] != ' ') or
+            (selected[3] == selected[5] == selected[7] and selected[3] != ' ')):
         final = 'win'
         if selected.count("X")> selected.count("O"):
             mark = "X"
