@@ -59,33 +59,20 @@ class Player():
     
     """
     player class
+    Choose to be  CPU or Human
     have money
     can get card (hit) or decline (stay)
     """
-    def __init__(self,name:str, money:int):
+    def __init__(self,name:str, money:int, cpu=True):
         self.name = name
         self.hold = []
         self.score = 0
         self.money = 0
+        self.cpu = cpu
 
     def __str__(self):
         return print(self.name, "have $", self.money+".")
-    
-class Player_dealer():
-    """
-    player_dealer class
-    have money
-    can get card (hit) or decline (sit)
-    """
-    def __init__(self,name:str, money:int):
-        self.name = name
-        self.hold = []
-        self.score = 0
-        self.money = 0
-
-    def __str__(self):
-        return print(self.name, "have $", self.money+".")
-   
+      
 class Bet :
     """class to get bet mone and check for valid money
     """
@@ -96,7 +83,8 @@ class Bet :
         print(player.name, "place your bet:")
         while True:
             amount = int(input())
-            if amount < = player.money :
+            if amount <= player.money:
+
                 print ("bet accepted")
                 return amount
             else:
@@ -104,3 +92,4 @@ class Bet :
 
 
 play_deck = Deck()
+
