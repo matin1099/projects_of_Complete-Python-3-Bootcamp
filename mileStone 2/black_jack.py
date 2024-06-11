@@ -10,86 +10,89 @@ And most importantly:
 * **You must use OOP and classes in some portion of your game. You can not just use functions in your game. Use classes to help you define the Deck and the Player's hand. There are many right ways to do this, so explore it well!**
 
 """
+from files.player import Player
+from files.compare import compare
+from files.deck import Deck
 
-from random import shuffle 
+print("Welcome to BlackJack")
+p1 = Player(input("Please Enter your Name:\t"), int(input("How much money you have?\t")), False)
+p2 = Player("Dealer", p1.money)
 
-suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
-ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
-values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8, 
-            'Nine':9, 'Ten':10, 'Jack':10, 'Queen':10, 'King':10, 'Ace':11}
-class Card():
-    """Card class:
-    create 52  card with value
 
-    """
-    def __init__(self, suit, rank):
+while True:
+    # Main game loop
+    #break if END condition trigged
 
-        self.suit = suit
-        self.rank = rank
-        self.value = values[rank]
+    # making bet and 
+    # only human can bet
+    deck = Deck() #Create cards
+    bet_money = p1.bet()
+    bet_money = p2.bet(bet_money)
 
-    def __str__(self):
-        return self.rank + " of " + self.suit
+    print("time to deal cards:")
+    #passing Card and read both Human   
+    p1.get_card(deck.dealed())
+    p1.get_card(deck.dealed())
+    p1.read()
+    # getting card and read one dealer
+    p2.get_card(deck.dealed())
+    p2.read()
+    p2.get_card(deck.dealed())
 
-class Deck():
-    """
-    Create Deck of cards for playing
-    will create full deck at  first use
-    will suffle deck
-    willremove dealed cards
-    """
-    def __init__(self):
-        self.all_card = []
-        for i in suits:
-            for j in ranks:
-                self.all_card.append(Card(i,j))
-        self.Shuffle()
 
-    def Shuffle(self):
-        """Shuffling cards
-        """
-        shuffle(self.all_card)
+    #human/player choose to hit or stay
+    print("now time to play!!!")
+    respond = ''
+    play_round = True
+    while play_round:
+        p1.read()
+        respond = input("{} [H]it Or [S]tay?? ".format(p1.name))
+        if respond in  ["h", "H",]:
+            print("{} HITTED".format(p1.name))
+            play_round =p1.hit(deck.dealed())
+        elif respond in ["s", "S"]:
+            print("{} STAYED".format(p1.name))
+            play_round = False
+        else:
+            print("Bad choice")
+            continue
+            
 
-    def dealed(self):
-        """Dealing a card and remove last card.
-        """
-        return(self.all_card.pop(-1))
-
-class Player():
+            # dealer play
+    print("Now dealer \n\n")
+    respond = ''
+    play_round = True
+    while play_round:
+        p2.read()
+        if p2.score < 21 and p2.score < p1.score:
+            print("{} HITTED".format(p2.name))
+            play_round =p2.hit(deck.dealed())
+        else:
+            print("{} STAYED".format(p1.name))
+            play_round = False            
+   
+    #choosing  winner and money returns
+    winner = compare(p1, p2)
+    if winner == 1:
+        p1.win_bet(bet_money*2)
+    elif winner == -1:
+        p2.win_bet(bet_money*2)
+    elif winner == 0 :
+        p1.win_bet(bet_money)
+        p2.win_bet(bet_money)
     
-    """
-    player class
-    Choose to be  CPU or Human
-    have money
-    can get card (hit) or decline (stay)
-    """
-    def __init__(self,name:str, money:int, cpu=True):
-        self.name = name
-        self.hold = []
-        self.score = 0
-        self.money = 0
-        self.cpu = cpu
-
-    def __str__(self):
-        return print(self.name, "have $", self.money+".")
-      
-class Bet :
-    """class to get bet mone and check for valid money
-    """
-    def __init__(self):
-        pass
-
-    def bet(self, player):
-        print(player.name, "place your bet:")
-        while True:
-            amount = int(input())
-            if amount <= player.money:
-
-                print ("bet accepted")
-                return amount
-            else:
-                print("Selected bet is more than you have!\nPlace your bet:")
-
-
-play_deck = Deck()
-
+    # END conditions
+    if p1.money == 0:
+        print ("{} lose all of money. GAMEOVER".format(p1.name))
+        break
+    elif p2.money == 0:
+        print ("{} lose all of money. GAMEOVER".format(p2.name))
+        break
+    
+    # clear all changing for next round.
+    print("NOW REDY FOR NEXT ROUND\n\n\n\n")
+    p1.clear()
+    p2.clear()
+    bet_money = 0
+    print("{} have {}.".format(p1.name,p1.money))
+    print("{} have {}.".format(p2.name,p2.money))
